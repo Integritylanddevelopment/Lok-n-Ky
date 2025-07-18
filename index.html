@@ -163,7 +163,31 @@
     </div>
 
     <script>
-        // Removed auto-redirect functionality - all users see welcome page
+        // Check for existing credentials on page load
+        function checkExistingCredentials() {
+            const hasPIN = localStorage.getItem("vault_pin");
+            const hasEmail = localStorage.getItem("vault_email_user");
+            
+            // Update button text and functionality based on existing credentials
+            const pinOption = document.querySelector('.auth-option:first-child');
+            const emailOption = document.querySelector('.auth-option:last-child');
+            
+            if (hasPIN) {
+                const pinButton = pinOption.querySelector('.option-title');
+                const pinDesc = pinOption.querySelector('.option-description');
+                pinButton.textContent = 'Sign In with PIN';
+                pinDesc.textContent = 'Enter your existing 4-digit PIN';
+                pinOption.onclick = signInWithPIN;
+            }
+            
+            if (hasEmail) {
+                const emailButton = emailOption.querySelector('.option-title');
+                const emailDesc = emailOption.querySelector('.option-description');
+                emailButton.textContent = 'Sign In with Email';
+                emailDesc.textContent = 'Enter your existing email and password';
+                emailOption.onclick = signInWithEmail;
+            }
+        }
 
         function choosePIN() {
             console.log("User chose PIN authentication");
@@ -174,6 +198,19 @@
             console.log("User chose email authentication");
             window.location.href = 'vault_email_setup.html';
         }
+
+        function signInWithPIN() {
+            console.log("User chose to sign in with existing PIN");
+            window.location.href = 'vault_pin_signin.html';
+        }
+
+        function signInWithEmail() {
+            console.log("User chose to sign in with existing email");
+            window.location.href = 'vault_email_signin.html';
+        }
+
+        // Run credential check when page loads
+        document.addEventListener('DOMContentLoaded', checkExistingCredentials);
 
         console.log('The Vault Welcome page ready!');
     </script>
