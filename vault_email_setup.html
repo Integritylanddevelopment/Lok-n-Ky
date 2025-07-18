@@ -346,6 +346,8 @@
             // Save credentials to localStorage
             localStorage.setItem("vault_email_user", JSON.stringify({ email, password }));
             localStorage.setItem("vault_auth_method", "email");
+            localStorage.setItem("vault_authenticated", "true");
+            localStorage.setItem("vault_auth_time", new Date().getTime().toString());
             
             // Show success message
             document.getElementById('success-message').style.display = 'block';
