@@ -289,6 +289,8 @@
             // Save PIN to localStorage
             localStorage.setItem("vault_pin", pin);
             localStorage.setItem("vault_auth_method", "pin");
+            localStorage.setItem("vault_authenticated", "true");
+            localStorage.setItem("vault_auth_time", new Date().getTime().toString());
             
             // Show success message
             document.getElementById('success-message').style.display = 'block';
