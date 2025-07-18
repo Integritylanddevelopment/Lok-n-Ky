@@ -1,0 +1,15 @@
+[workflows]
+runButton = "Serve static"
+
+[[workflows.workflow]]
+name = "Serve static"
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Starting The Vault app on port 5000...\""
+waitForPort = 80
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "static-web-server -w ./.config/static-web-server.toml"
