@@ -207,6 +207,18 @@
         .forgot-password a:hover {
             color: #81d4fa;
         }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #f87171;
+            font-size: 14px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -222,7 +234,7 @@
                 Enter your email and password to access your vault.
             </p>
 
-            <div id="error-message" class="error-message"></div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
             <input type="email" class="signin-input" id="email-input" placeholder="Enter your email" />
             <input type="password" class="signin-input" id="password-input" placeholder="Enter your password" />
             
@@ -298,106 +310,6 @@
 
         // Auto-focus on load
         emailInput.focus();
-
-        console.log('Email Sign In page ready!');
-    </script>
-            
-            <div id="success-message" class="success-message">
-                <p>Sign in successful! Redirecting to vault...</p>
-            </div>
-
-            <button class="back-btn" onclick="goBack()">← Back to Options</button>
-        </div>
-    </div>
-
-    <script>
-        const emailInput = document.getElementById('email-input');
-        const passwordInput = document.getElementById('password-input');
-        const signinBtn = document.getElementById('signin-btn');
-
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function validateInputs() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            
-            // Enable button only if both fields have content and email is valid
-            if (validateEmail(email) && password.length > 0) {
-                signinBtn.disabled = false;
-            } else {
-                signinBtn.disabled = true;
-            }
-        }
-
-        function signIn() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            const storedUser = JSON.parse(localStorage.getItem("vault_email_user") || "{}");
-
-            if (!storedUser.email) {
-                alert("No account found. Please set up your account first.");
-                return;
-            }
-
-            if (email === storedUser.email && password === storedUser.password) {
-                // Success
-                document.getElementById('success-message').style.display = 'block';
-                emailInput.style.display = 'none';
-                passwordInput.style.display = 'none';
-                signinBtn.style.display = 'none';
-                document.querySelector('.forgot-password').style.display = 'none';
-                
-                console.log("Email sign in successful");
-                
-                // Redirect after 2 seconds
-                setTimeout(() => {
-                    alert("Redirecting to vault... (In real app, this would navigate to the main vault)");
-                }, 2000);
-            } else {
-                alert("Incorrect email or password. Please try again.");
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-
-        function resetPassword() {
-            const storedUser = JSON.parse(localStorage.getItem("vault_email_user") || "{}");
-            
-            if (!storedUser.email) {
-                alert("No account found to reset.");
-                return;
-            }
-            
-            const confirmed = confirm("This will clear your stored credentials and you'll need to set up your account again. Continue?");
-            
-            if (confirmed) {
-                localStorage.removeItem("vault_email_user");
-                localStorage.removeItem("vault_auth_method");
-                alert("Account reset. You can now create a new account.");
-                // In real app: window.location.href = 'welcome.html';
-            }
-        }
-
-        function goBack() {
-            console.log("Going back to welcome page");
-            alert("Going back... (In real app, this would navigate to welcome page)");
-            // In real app: window.location.href = 'welcome.html';
-        }
-
-        // Add event listeners
-        emailInput.addEventListener('input', validateInputs);
-        passwordInput.addEventListener('input', validateInputs);
-
-        // Enter key navigation
-        emailInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') passwordInput.focus();
-        });
-
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !signinBtn.disabled) signIn();
-        });
 
         console.log('Email Sign In page ready!');
     </script>
