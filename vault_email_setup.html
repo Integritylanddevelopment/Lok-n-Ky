@@ -248,7 +248,7 @@
             </div>
 
             <input type="email" class="setup-input" id="email-input" placeholder="Enter your email" />
-            <input type="password" class="setup-input" id="password-input" placeholder="Create password (min 4 characters)" />
+            <input type="password" class="setup-input" id="password-input" placeholder="Create password" />
             <div id="password-strength" class="password-strength"></div>
             <input type="password" class="setup-input" id="confirm-password-input" placeholder="Confirm password" />
             
@@ -274,7 +274,7 @@
         }
 
         function checkPasswordStrength(password) {
-            if (password.length < 4) return 'weak';
+            if (password.length < 6) return 'weak';
             if (password.length < 8) return 'medium';
             if (password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password)) {
                 return 'strong';
@@ -312,8 +312,8 @@
             
             // Enable button only if all inputs are valid
             if (validateEmail(email) && 
-                password.length >= 4 && 
-                confirmPassword.length >= 4 && 
+                password.length > 0 && 
+                confirmPassword.length > 0 && 
                 password === confirmPassword) {
                 createBtn.disabled = false;
             } else {
@@ -331,8 +331,8 @@
                 return;
             }
             
-            if (password.length < 4) {
-                alert("Password must be at least 4 characters long");
+            if (password.length === 0) {
+                alert("Password cannot be empty");
                 return;
             }
             
