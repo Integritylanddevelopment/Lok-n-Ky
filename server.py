@@ -20,9 +20,11 @@ if __name__ == "__main__":
     PORT = int(os.environ.get('PORT', 8080))
     
     print(f"Starting The Vault server on port {PORT}")
+    print(f"Serving files from current directory: {os.getcwd()}")
     
     with socketserver.TCPServer(("0.0.0.0", PORT), MyHTTPRequestHandler) as httpd:
         print(f"Server running at http://0.0.0.0:{PORT}")
+        print("Press Ctrl+C to stop the server")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
