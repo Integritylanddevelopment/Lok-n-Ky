@@ -7,12 +7,15 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python3 server.py"
+args = "python server.py"
 waitForPort = 80
 
 [nix]
 channel = "stable-24_05"
 
+[nix.packages]
+python3 = "latest"
+
 [deployment]
 deploymentTarget = "cloudrun"
-run = ["sh", "-c", "python3 server.py"]
+run = ["sh", "-c", "python server.py"]
