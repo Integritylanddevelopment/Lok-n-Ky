@@ -3,9 +3,7 @@ modules = ["web"]
 
 [nix]
 channel = "stable-24_11"
-
-[nix.packages]
-python3 = "latest"
+packages = ["python3"]
 
 [deployment]
 deploymentTarget = "cloudrun"
