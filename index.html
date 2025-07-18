@@ -169,14 +169,12 @@
     <script>
         function choosePIN() {
             console.log("User chose PIN authentication");
-            alert("Redirecting to PIN setup... (In real app, this would navigate to PIN setup page)");
-            // In real app: window.location.href = 'pin-setup.html';
+            window.location.href = 'vault_pin_setup.html';
         }
 
         function chooseEmail() {
             console.log("User chose email authentication");
-            alert("Redirecting to email setup... (In real app, this would navigate to email setup page)");
-            // In real app: window.location.href = 'email-setup.html';
+            window.location.href = 'vault_email_setup.html';
         }
 
         console.log('The Vault Welcome page ready!');
