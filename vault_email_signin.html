@@ -222,14 +222,85 @@
                 Enter your email and password to access your vault.
             </p>
 
+            <div id="error-message" class="error-message"></div>
             <input type="email" class="signin-input" id="email-input" placeholder="Enter your email" />
             <input type="password" class="signin-input" id="password-input" placeholder="Enter your password" />
             
             <button class="signin-btn" id="signin-btn" onclick="signIn()" disabled>Sign In</button>
+            <button class="back-btn" onclick="goBack()">← Back to Welcome</button>
+        </div>
+    </div>
+
+    <script>
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const signinBtn = document.getElementById('signin-btn');
+        const errorMessage = document.getElementById('error-message');
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validateInputs() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
             
-            <div class="forgot-password">
-                <a href="#" onclick="resetPassword()">Forgot your password?</a>
-            </div>
+            signinBtn.disabled = !(validateEmail(email) && password.length >= 4);
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function signIn() {
+            const enteredEmail = emailInput.value.trim();
+            const enteredPassword = passwordInput.value;
+            
+            const storedUser = localStorage.getItem("vault_email_user");
+            
+            if (!storedUser) {
+                showError("No account found. Please create an account first.");
+                return;
+            }
+            
+            const userData = JSON.parse(storedUser);
+            
+            if (enteredEmail === userData.email && enteredPassword === userData.password) {
+                localStorage.setItem("vault_authenticated", "true");
+                localStorage.setItem("vault_auth_time", new Date().getTime().toString());
+                window.location.href = 'dev_secrets_manager.html';
+            } else {
+                showError("Invalid email or password. Please try again.");
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Event listeners
+        emailInput.addEventListener('input', validateInputs);
+        passwordInput.addEventListener('input', validateInputs);
+
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') passwordInput.focus();
+        });
+
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !signinBtn.disabled) signIn();
+        });
+
+        // Auto-focus on load
+        emailInput.focus();
+
+        console.log('Email Sign In page ready!');
+    </script>
             
             <div id="success-message" class="success-message">
                 <p>Sign in successful! Redirecting to vault...</p>

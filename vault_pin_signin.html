@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIN Setup - The Vault</title>
+    <title>PIN Sign In - The Vault</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +24,7 @@
             align-items: center;
         }
 
-        .setup-container {
+        .signin-container {
             max-width: 400px;
             width: 90%;
             background: #1a1f36;
@@ -33,30 +34,30 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .setup-header {
+        .signin-header {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 50%, #1a202c 100%);
             color: #68768a;
             padding: 32px 20px;
             text-align: center;
         }
 
-        .setup-header h2 {
+        .signin-header h2 {
             font-size: 28px;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             margin-bottom: 8px;
         }
 
-        .setup-header p {
+        .signin-header p {
             font-size: 14px;
             opacity: 0.9;
         }
 
-        .setup-content {
+        .signin-content {
             padding: 32px 20px;
         }
 
-        .setup-title {
+        .signin-title {
             color: #64b5f6;
             margin-bottom: 12px;
             font-size: 20px;
@@ -64,7 +65,7 @@
             text-align: center;
         }
 
-        .setup-description {
+        .signin-description {
             color: #68768a;
             margin-bottom: 32px;
             font-size: 15px;
@@ -72,10 +73,10 @@
             line-height: 1.5;
         }
 
-        .setup-input {
+        .signin-input {
             width: 100%;
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             background: #0f1419;
             border: 1px solid #2d3748;
             border-radius: 8px;
@@ -88,17 +89,17 @@
             font-family: inherit;
         }
 
-        .setup-input:focus {
+        .signin-input:focus {
             border-color: #635bff;
             box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
         }
 
-        .setup-input::placeholder {
+        .signin-input::placeholder {
             color: #68768a;
             letter-spacing: normal;
         }
 
-        .setup-btn {
+        .signin-btn {
             width: 100%;
             padding: 16px 20px;
             background: rgba(99, 91, 255, 0.3);
@@ -116,7 +117,7 @@
             margin-bottom: 20px;
         }
 
-        .setup-btn::before {
+        .signin-btn::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -127,20 +128,20 @@
             z-index: -1;
         }
 
-        .setup-btn:hover::before {
+        .signin-btn:hover::before {
             opacity: 1;
         }
 
-        .setup-btn:hover {
+        .signin-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 15px rgba(99, 91, 255, 0.3);
         }
 
-        .setup-btn:active {
+        .signin-btn:active {
             transform: translateY(0px);
         }
 
-        .setup-btn:disabled {
+        .signin-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
@@ -184,157 +185,96 @@
             box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
         }
 
-        .success-message {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 16px;
             text-align: center;
-            color: #10b981;
-            display: none;
-        }
-
-        .pin-tips {
-            background: rgba(100, 181, 246, 0.1);
-            border: 1px solid rgba(100, 181, 246, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .pin-tips h4 {
-            color: #64b5f6;
-            margin-bottom: 8px;
+            color: #f87171;
             font-size: 14px;
-        }
-
-        .pin-tips ul {
-            color: #68768a;
-            font-size: 13px;
-            margin-left: 16px;
-        }
-
-        .pin-tips li {
-            margin-bottom: 4px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="setup-container">
-        <div class="setup-header">
+    <div class="signin-container">
+        <div class="signin-header">
             <h2>The Vault</h2>
-            <p>PIN Setup</p>
+            <p>PIN Sign In</p>
         </div>
 
-        <div class="setup-content">
-            <h3 class="setup-title">Create Your 4-Digit PIN</h3>
-            <p class="setup-description">
-                Choose a secure 4-digit PIN that you'll remember. This will be used to unlock your vault.
+        <div class="signin-content">
+            <h3 class="signin-title">Enter Your PIN</h3>
+            <p class="signin-description">
+                Enter your 4-digit PIN to access your vault.
             </p>
 
-            <div class="pin-tips">
-                <h4>PIN Tips:</h4>
-                <ul>
-                    <li>Avoid obvious patterns (1234, 0000)</li>
-                    <li>Don't use your birth year or phone number</li>
-                    <li>Choose something memorable but secure</li>
-                </ul>
-            </div>
-
-            <input type="password" class="setup-input" id="pin-input" placeholder="Enter 4-digit PIN" maxlength="4" />
-            <input type="password" class="setup-input" id="confirm-input" placeholder="Confirm PIN" maxlength="4" />
-            
-            <button class="setup-btn" id="create-btn" onclick="createPIN()" disabled>Create PIN</button>
-            
-            <div id="success-message" class="success-message">
-                <p>PIN created successfully! Redirecting to vault...</p>
-            </div>
-
-            <button class="back-btn" onclick="goBack()">← Back to Options</button>
+            <div id="error-message" class="error-message"></div>
+            <input type="password" class="signin-input" id="pin-input" placeholder="Enter your PIN" maxlength="4" />
+            <button class="signin-btn" id="signin-btn" onclick="signIn()" disabled>Sign In</button>
+            <button class="back-btn" onclick="goBack()">← Back to Welcome</button>
         </div>
     </div>
 
     <script>
         const pinInput = document.getElementById('pin-input');
-        const confirmInput = document.getElementById('confirm-input');
-        const createBtn = document.getElementById('create-btn');
+        const signinBtn = document.getElementById('signin-btn');
+        const errorMessage = document.getElementById('error-message');
 
-        function validateInputs() {
+        function validateInput() {
             const pin = pinInput.value;
-            const confirm = confirmInput.value;
-            
-            // Enable button only if both inputs have 4 digits
-            if (pin.length === 4 && confirm.length === 4 && /^\d{4}$/.test(pin) && /^\d{4}$/.test(confirm)) {
-                createBtn.disabled = false;
-            } else {
-                createBtn.disabled = true;
-            }
+            signinBtn.disabled = pin.length !== 4 || !/^\d{4}$/.test(pin);
         }
 
-        function createPIN() {
-            const pin = pinInput.value;
-            const confirm = confirmInput.value;
-            
-            if (pin !== confirm) {
-                alert("PINs don't match. Please try again.");
-                confirmInput.value = '';
-                confirmInput.focus();
-                return;
-            }
-            
-            if (!/^\d{4}$/.test(pin)) {
-                alert("Please enter exactly 4 digits");
-                return;
-            }
-            
-            // Save PIN to localStorage
-            localStorage.setItem("vault_pin", pin);
-            localStorage.setItem("vault_auth_method", "pin");
-            
-            // Show success message
-            document.getElementById('success-message').style.display = 'block';
-            pinInput.style.display = 'none';
-            confirmInput.style.display = 'none';
-            createBtn.style.display = 'none';
-            
-            console.log("PIN created successfully");
-            
-            // Redirect after 2 seconds
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
             setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function signIn() {
+            const enteredPIN = pinInput.value;
+            const storedPIN = localStorage.getItem("vault_pin");
+            
+            if (!storedPIN) {
+                showError("No PIN found. Please set up your PIN first.");
+                return;
+            }
+            
+            if (enteredPIN === storedPIN) {
+                localStorage.setItem("vault_authenticated", "true");
+                localStorage.setItem("vault_auth_time", new Date().getTime().toString());
                 window.location.href = 'dev_secrets_manager.html';
-            }, 2000);
+            } else {
+                showError("Incorrect PIN. Please try again.");
+                pinInput.value = '';
+                pinInput.focus();
+            }
         }
 
         function goBack() {
-            console.log("Going back to welcome page");
             window.location.href = 'index.html';
         }
 
-        // Add event listeners for real-time validation
-        pinInput.addEventListener('input', validateInputs);
-        confirmInput.addEventListener('input', validateInputs);
-
-        // Only allow numbers
+        // Event listeners
+        pinInput.addEventListener('input', validateInput);
         pinInput.addEventListener('keypress', function(e) {
             if (!/\d/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
                 e.preventDefault();
             }
-            if (e.key === 'Enter' && pinInput.value.length === 4) {
-                confirmInput.focus();
+            if (e.key === 'Enter' && !signinBtn.disabled) {
+                signIn();
             }
         });
 
-        confirmInput.addEventListener('keypress', function(e) {
-            if (!/\d/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
-                e.preventDefault();
-            }
-            if (e.key === 'Enter' && !createBtn.disabled) {
-                createPIN();
-            }
-        });
+        // Auto-focus on load
+        pinInput.focus();
 
-        console.log('PIN Setup page ready!');
+        console.log('PIN Sign In page ready!');
     </script>
 </body>
 </html>

@@ -361,14 +361,13 @@
             
             // Redirect after 2 seconds
             setTimeout(() => {
-                alert("Redirecting to vault... (In real app, this would navigate to the main vault)");
+                window.location.href = 'dev_secrets_manager.html';
             }, 2000);
         }
 
         function goBack() {
             console.log("Going back to welcome page");
-            alert("Going back... (In real app, this would navigate to welcome page)");
-            // In real app: window.location.href = 'welcome.html';
+            window.location.href = 'index.html';
         }
 
         // Add event listeners
