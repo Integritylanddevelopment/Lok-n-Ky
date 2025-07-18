@@ -19,3 +19,4 @@ channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "cloudrun"
+run = ["sh", "-c", "python3 server.py"]
