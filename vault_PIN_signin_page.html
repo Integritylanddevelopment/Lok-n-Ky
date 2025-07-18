@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - The Vault</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            padding: 16px;
+            color: #e3e8ee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signin-container {
+            max-width: 400px;
+            width: 90%;
+            background: #1a1f36;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .signin-header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 50%, #1a202c 100%);
+            color: #68768a;
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        .signin-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+
+        .signin-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .signin-content {
+            padding: 32px 20px;
+        }
+
+        .login-method {
+            margin-bottom: 24px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            background: #0f1419;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #e3e8ee;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .login-input:focus {
+            border-color: #635bff;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        }
+
+        .login-input::placeholder {
+            color: #68768a;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(45, 55, 72, 0.3);
+            border: 1px solid rgba(45, 55, 72, 0.6);
+            border-radius: 12px;
+            color: #64b5f6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            font-family: inherit;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(100, 181, 246, 0.1), rgba(99, 91, 255, 0.1));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .login-btn:hover::before {
+            opacity: 1;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(0px);
+        }
+
+        .login-btn.primary {
+            background: rgba(99, 91, 255, 0.3);
+            border-color: rgba(100, 181, 246, 0.6);
+            color: #81d4fa;
+        }
+
+        .login-btn.primary:hover {
+            box-shadow: 0 0 15px rgba(99, 91, 255, 0.3);
+        }
+
+        .divider {
+            margin: 24px 0;
+            color: #68768a;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pin-setup-title {
+            color: #64b5f6;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pin-setup-description {
+            color: #68768a;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="signin-container">
+        <div class="signin-header">
+            <h2>The Vault</h2>
+            <p>Secure your API keys and secrets</p>
+        </div>
+
+        <div class="signin-content">
+            <!-- PIN Login Only -->
+            <div class="login-method" id="pin-login">
+                <div id="pin-setup" style="display: none;">
+                    <h3 class="pin-setup-title">Create Your PIN</h3>
+                    <p class="pin-setup-description">Set a 4-digit PIN to secure your vault</p>
+                    <input type="password" class="login-input" id="pin-setup-input" placeholder="Create 4-digit PIN" maxlength="4" />
+                    <input type="password" class="login-input" id="pin-confirm-input" placeholder="Confirm PIN" maxlength="4" />
+                    <button class="login-btn primary" onclick="createPIN()">Create PIN</button>
+                </div>
+                
+                <div id="pin-unlock">
+                    <input type="password" class="login-input" id="pin-input" placeholder="Enter your 4-digit PIN" maxlength="4" />
+                    <button class="login-btn primary" onclick="unlockWithPIN()">Unlock Vault</button>
+                </div>
+            </div>
+
+            <!-- Success Message (Hidden by default) -->
+            <div id="success-message" class="success-message" style="display: none;">
+                <p>Welcome to The Vault! You're now signed in.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication functions
+        function checkPINStatus() {
+            const storedPIN = localStorage.getItem("vault_pin");
+            const pinSetup = document.getElementById("pin-setup");
+            const pinUnlock = document.getElementById("pin-unlock");
+            
+            if (!storedPIN) {
+                // First time user - show PIN setup
+                pinSetup.style.display = "block";
+                pinUnlock.style.display = "none";
+            } else {
+                // Returning user - show PIN unlock
+                pinSetup.style.display = "none";
+                pinUnlock.style.display = "block";
+            }
+        }
+
+        function createPIN() {
+            const pinInput = document.getElementById("pin-setup-input").value;
+            const confirmInput = document.getElementById("pin-confirm-input").value;
+            
+            if (pinInput.length !== 4 || !/^\d{4}$/.test(pinInput)) {
+                alert("Please enter exactly 4 digits");
+                return;
+            }
+            
+            if (pinInput !== confirmInput) {
+                alert("PINs don't match. Please try again.");
+                return;
+            }
+            
+            localStorage.setItem("vault_pin", pinInput);
+            showSuccess("PIN created successfully!");
+            console.log("PIN created successfully");
+        }
+
+        function unlockWithPIN() {
+            const inputPIN = document.getElementById("pin-input").value;
+            const storedPIN = localStorage.getItem("vault_pin");
+            
+            if (inputPIN === storedPIN) {
+                showSuccess("PIN verified! Access granted.");
+                console.log("PIN verified successfully");
+            } else {
+                alert("Incorrect PIN");
+                document.getElementById("pin-input").value = "";
+            }
+        }
+
+        function handleEmailLogin() {
+            // Removed - this is now PIN-only page
+        }
+
+        function toggleLoginMethod() {
+            // Removed - this is now PIN-only page
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById("success-message");
+            successDiv.querySelector("p").textContent = message;
+            successDiv.style.display = "block";
+            
+            // Hide all login forms
+            document.getElementById("pin-login").style.display = "none";
+            document.getElementById("email-login").style.display = "none";
+            
+            // In a real app, you would redirect to the main vault here
+            setTimeout(() => {
+                alert("Redirecting to vault... (In real app, this would navigate to the main interface)");
+            }, 2000);
+        }
+
+        // Enter key support for inputs
+        document.getElementById("pin-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") unlockWithPIN();
+        });
+
+        document.getElementById("pin-setup-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") document.getElementById("pin-confirm-input").focus();
+        });
+
+        document.getElementById("pin-confirm-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") createPIN();
+        });
+
+        document.getElementById("password-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") handleEmailLogin();
+        });
+
+        // Initialize PIN status on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            checkPINStatus();
+        });
+
+        console.log('The Vault Sign-In page ready!');
+    </script>
+</body>
+</html>

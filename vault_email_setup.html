@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Setup - The Vault</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            padding: 16px;
+            color: #e3e8ee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .setup-container {
+            max-width: 400px;
+            width: 90%;
+            background: #1a1f36;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .setup-header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 50%, #1a202c 100%);
+            color: #68768a;
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        .setup-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+
+        .setup-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .setup-content {
+            padding: 32px 20px;
+        }
+
+        .setup-title {
+            color: #64b5f6;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .setup-description {
+            color: #68768a;
+            margin-bottom: 32px;
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .setup-input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            background: #0f1419;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #e3e8ee;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .setup-input:focus {
+            border-color: #635bff;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        }
+
+        .setup-input::placeholder {
+            color: #68768a;
+        }
+
+        .setup-btn {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(99, 91, 255, 0.3);
+            border: 1px solid rgba(100, 181, 246, 0.6);
+            border-radius: 12px;
+            color: #81d4fa;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            font-family: inherit;
+            margin-bottom: 20px;
+        }
+
+        .setup-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.2), rgba(129, 212, 250, 0.1));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .setup-btn:hover::before {
+            opacity: 1;
+        }
+
+        .setup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(99, 91, 255, 0.3);
+        }
+
+        .setup-btn:active {
+            transform: translateY(0px);
+        }
+
+        .setup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(45, 55, 72, 0.3);
+            border: 1px solid rgba(45, 55, 72, 0.6);
+            border-radius: 12px;
+            color: #64b5f6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            font-family: inherit;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(100, 181, 246, 0.1), rgba(99, 91, 255, 0.1));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover::before {
+            opacity: 1;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #10b981;
+            display: none;
+        }
+
+        .password-tips {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .password-tips h4 {
+            color: #64b5f6;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .password-tips ul {
+            color: #68768a;
+            font-size: 13px;
+            margin-left: 16px;
+        }
+
+        .password-tips li {
+            margin-bottom: 4px;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .strength-weak { color: #f56565; }
+        .strength-medium { color: #ed8936; }
+        .strength-strong { color: #10b981; }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h2>The Vault</h2>
+            <p>Email & Password Setup</p>
+        </div>
+
+        <div class="setup-content">
+            <h3 class="setup-title">Create Your Account</h3>
+            <p class="setup-description">
+                Set up your email and password to secure your vault. This information stays on your device.
+            </p>
+
+            <div class="password-tips">
+                <h4>Security Tips:</h4>
+                <ul>
+                    <li>Use a strong, unique password</li>
+                    <li>Include uppercase, lowercase, and numbers</li>
+                    <li>At least 8 characters recommended</li>
+                </ul>
+            </div>
+
+            <input type="email" class="setup-input" id="email-input" placeholder="Enter your email" />
+            <input type="password" class="setup-input" id="password-input" placeholder="Create password (min 4 characters)" />
+            <div id="password-strength" class="password-strength"></div>
+            <input type="password" class="setup-input" id="confirm-password-input" placeholder="Confirm password" />
+            
+            <button class="setup-btn" id="create-btn" onclick="createAccount()" disabled>Create Account</button>
+            
+            <div id="success-message" class="success-message">
+                <p>Account created successfully! Redirecting to vault...</p>
+            </div>
+
+            <button class="back-btn" onclick="goBack()">← Back to Options</button>
+        </div>
+    </div>
+
+    <script>
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const confirmPasswordInput = document.getElementById('confirm-password-input');
+        const createBtn = document.getElementById('create-btn');
+        const strengthDiv = document.getElementById('password-strength');
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function checkPasswordStrength(password) {
+            if (password.length < 4) return 'weak';
+            if (password.length < 8) return 'medium';
+            if (password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password)) {
+                return 'strong';
+            }
+            return 'medium';
+        }
+
+        function updatePasswordStrength() {
+            const password = passwordInput.value;
+            if (password.length === 0) {
+                strengthDiv.textContent = '';
+                return;
+            }
+            
+            const strength = checkPasswordStrength(password);
+            strengthDiv.className = `password-strength strength-${strength}`;
+            
+            switch(strength) {
+                case 'weak':
+                    strengthDiv.textContent = 'Password strength: Weak';
+                    break;
+                case 'medium':
+                    strengthDiv.textContent = 'Password strength: Medium';
+                    break;
+                case 'strong':
+                    strengthDiv.textContent = 'Password strength: Strong';
+                    break;
+            }
+        }
+
+        function validateInputs() {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            // Enable button only if all inputs are valid
+            if (validateEmail(email) && 
+                password.length >= 4 && 
+                confirmPassword.length >= 4 && 
+                password === confirmPassword) {
+                createBtn.disabled = false;
+            } else {
+                createBtn.disabled = true;
+            }
+        }
+
+        function createAccount() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address");
+                return;
+            }
+            
+            if (password.length < 4) {
+                alert("Password must be at least 4 characters long");
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert("Passwords don't match. Please try again.");
+                confirmPasswordInput.value = '';
+                confirmPasswordInput.focus();
+                return;
+            }
+            
+            // Save credentials to localStorage
+            localStorage.setItem("vault_email_user", JSON.stringify({ email, password }));
+            localStorage.setItem("vault_auth_method", "email");
+            
+            // Show success message
+            document.getElementById('success-message').style.display = 'block';
+            emailInput.style.display = 'none';
+            passwordInput.style.display = 'none';
+            confirmPasswordInput.style.display = 'none';
+            strengthDiv.style.display = 'none';
+            createBtn.style.display = 'none';
+            
+            console.log("Account created successfully");
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                alert("Redirecting to vault... (In real app, this would navigate to the main vault)");
+            }, 2000);
+        }
+
+        function goBack() {
+            console.log("Going back to welcome page");
+            alert("Going back... (In real app, this would navigate to welcome page)");
+            // In real app: window.location.href = 'welcome.html';
+        }
+
+        // Add event listeners
+        emailInput.addEventListener('input', validateInputs);
+        passwordInput.addEventListener('input', function() {
+            updatePasswordStrength();
+            validateInputs();
+        });
+        confirmPasswordInput.addEventListener('input', validateInputs);
+
+        // Enter key navigation
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') passwordInput.focus();
+        });
+
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') confirmPasswordInput.focus();
+        });
+
+        confirmPasswordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !createBtn.disabled) createAccount();
+        });
+
+        console.log('Email Setup page ready!');
+    </script>
+</body>
+</html>

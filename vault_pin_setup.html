@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIN Setup - The Vault</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            padding: 16px;
+            color: #e3e8ee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .setup-container {
+            max-width: 400px;
+            width: 90%;
+            background: #1a1f36;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .setup-header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 50%, #1a202c 100%);
+            color: #68768a;
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        .setup-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+
+        .setup-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .setup-content {
+            padding: 32px 20px;
+        }
+
+        .setup-title {
+            color: #64b5f6;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .setup-description {
+            color: #68768a;
+            margin-bottom: 32px;
+            font-size: 15px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .setup-input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #0f1419;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #e3e8ee;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .setup-input:focus {
+            border-color: #635bff;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        }
+
+        .setup-input::placeholder {
+            color: #68768a;
+            letter-spacing: normal;
+        }
+
+        .setup-btn {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(99, 91, 255, 0.3);
+            border: 1px solid rgba(100, 181, 246, 0.6);
+            border-radius: 12px;
+            color: #81d4fa;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            font-family: inherit;
+            margin-bottom: 20px;
+        }
+
+        .setup-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.2), rgba(129, 212, 250, 0.1));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .setup-btn:hover::before {
+            opacity: 1;
+        }
+
+        .setup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(99, 91, 255, 0.3);
+        }
+
+        .setup-btn:active {
+            transform: translateY(0px);
+        }
+
+        .setup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(45, 55, 72, 0.3);
+            border: 1px solid rgba(45, 55, 72, 0.6);
+            border-radius: 12px;
+            color: #64b5f6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            font-family: inherit;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(100, 181, 246, 0.1), rgba(99, 91, 255, 0.1));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover::before {
+            opacity: 1;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #10b981;
+            display: none;
+        }
+
+        .pin-tips {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pin-tips h4 {
+            color: #64b5f6;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .pin-tips ul {
+            color: #68768a;
+            font-size: 13px;
+            margin-left: 16px;
+        }
+
+        .pin-tips li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h2>The Vault</h2>
+            <p>PIN Setup</p>
+        </div>
+
+        <div class="setup-content">
+            <h3 class="setup-title">Create Your 4-Digit PIN</h3>
+            <p class="setup-description">
+                Choose a secure 4-digit PIN that you'll remember. This will be used to unlock your vault.
+            </p>
+
+            <div class="pin-tips">
+                <h4>PIN Tips:</h4>
+                <ul>
+                    <li>Avoid obvious patterns (1234, 0000)</li>
+                    <li>Don't use your birth year or phone number</li>
+                    <li>Choose something memorable but secure</li>
+                </ul>
+            </div>
+
+            <input type="password" class="setup-input" id="pin-input" placeholder="Enter 4-digit PIN" maxlength="4" />
+            <input type="password" class="setup-input" id="confirm-input" placeholder="Confirm PIN" maxlength="4" />
+            
+            <button class="setup-btn" id="create-btn" onclick="createPIN()" disabled>Create PIN</button>
+            
+            <div id="success-message" class="success-message">
+                <p>PIN created successfully! Redirecting to vault...</p>
+            </div>
+
+            <button class="back-btn" onclick="goBack()">← Back to Options</button>
+        </div>
+    </div>
+
+    <script>
+        const pinInput = document.getElementById('pin-input');
+        const confirmInput = document.getElementById('confirm-input');
+        const createBtn = document.getElementById('create-btn');
+
+        function validateInputs() {
+            const pin = pinInput.value;
+            const confirm = confirmInput.value;
+            
+            // Enable button only if both inputs have 4 digits
+            if (pin.length === 4 && confirm.length === 4 && /^\d{4}$/.test(pin) && /^\d{4}$/.test(confirm)) {
+                createBtn.disabled = false;
+            } else {
+                createBtn.disabled = true;
+            }
+        }
+
+        function createPIN() {
+            const pin = pinInput.value;
+            const confirm = confirmInput.value;
+            
+            if (pin !== confirm) {
+                alert("PINs don't match. Please try again.");
+                confirmInput.value = '';
+                confirmInput.focus();
+                return;
+            }
+            
+            if (!/^\d{4}$/.test(pin)) {
+                alert("Please enter exactly 4 digits");
+                return;
+            }
+            
+            // Save PIN to localStorage
+            localStorage.setItem("vault_pin", pin);
+            localStorage.setItem("vault_auth_method", "pin");
+            
+            // Show success message
+            document.getElementById('success-message').style.display = 'block';
+            pinInput.style.display = 'none';
+            confirmInput.style.display = 'none';
+            createBtn.style.display = 'none';
+            
+            console.log("PIN created successfully");
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                alert("Redirecting to vault... (In real app, this would navigate to the main vault)");
+            }, 2000);
+        }
+
+        function goBack() {
+            console.log("Going back to welcome page");
+            alert("Going back... (In real app, this would navigate to welcome page)");
+            // In real app: window.location.href = 'welcome.html';
+        }
+
+        // Add event listeners for real-time validation
+        pinInput.addEventListener('input', validateInputs);
+        confirmInput.addEventListener('input', validateInputs);
+
+        // Only allow numbers
+        pinInput.addEventListener('keypress', function(e) {
+            if (!/\d/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+                e.preventDefault();
+            }
+            if (e.key === 'Enter' && pinInput.value.length === 4) {
+                confirmInput.focus();
+            }
+        });
+
+        confirmInput.addEventListener('keypress', function(e) {
+            if (!/\d/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+                e.preventDefault();
+            }
+            if (e.key === 'Enter' && !createBtn.disabled) {
+                createPIN();
+            }
+        });
+
+        console.log('PIN Setup page ready!');
+    </script>
+</body>
+</html>
