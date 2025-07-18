@@ -167,31 +167,7 @@
     </div>
 
     <script>
-        // Check if user is already authenticated
-        function checkAuthentication() {
-            const authMethod = localStorage.getItem("vault_auth_method");
-            const isAuthenticated = localStorage.getItem("vault_authenticated");
-            const authTime = localStorage.getItem("vault_auth_time");
-            
-            // Check if authentication is still valid (24 hours)
-            if (isAuthenticated === "true" && authTime) {
-                const now = new Date().getTime();
-                const authAge = now - parseInt(authTime);
-                const twentyFourHours = 24 * 60 * 60 * 1000;
-                
-                if (authAge < twentyFourHours) {
-                    window.location.href = 'dev_secrets_manager.html';
-                    return;
-                }
-            }
-            
-            // If user exists but not authenticated, go to signin
-            if (authMethod === "pin" && localStorage.getItem("vault_pin")) {
-                window.location.href = 'vault_pin_signin.html';
-            } else if (authMethod === "email" && localStorage.getItem("vault_email_user")) {
-                window.location.href = 'vault_email_signin.html';
-            }
-        }
+        // Removed auto-redirect functionality - all users see welcome page
 
         function choosePIN() {
             console.log("User chose PIN authentication");
@@ -202,9 +178,6 @@
             console.log("User chose email authentication");
             window.location.href = 'vault_email_setup.html';
         }
-
-        // Check authentication on page load
-        checkAuthentication();
 
         console.log('The Vault Welcome page ready!');
     </script>
