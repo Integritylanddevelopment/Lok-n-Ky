@@ -2,12 +2,11 @@
 import http.server
 import socketserver
 import os
-from urllib.parse import urlparse
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-        self.send_header('Pragma', 'no-cache')
+        self.send_header('Pragma', 'no-cache') 
         self.send_header('Expires', '0')
         super().end_headers()
 
@@ -18,9 +17,13 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
 if __name__ == "__main__":
-    PORT = int(os.environ.get('PORT', 5000))
+    PORT = int(os.environ.get('PORT', 8080))
+    
+    print(f"Starting The Vault server on port {PORT}")
     
     with socketserver.TCPServer(("0.0.0.0", PORT), MyHTTPRequestHandler) as httpd:
-        print(f"Serving The Vault on port {PORT}")
-        print(f"Access your app at http://0.0.0.0:{PORT}")
-        httpd.serve_forever()
+        print(f"Server running at http://0.0.0.0:{PORT}")
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\nServer stopped.")
