@@ -17,7 +17,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
 if __name__ == "__main__":
-    PORT = int(os.environ.get('PORT', 8080))
+    PORT = int(os.environ.get('PORT', 5000))
     
     print(f"Starting The Vault server on port {PORT}")
     print(f"Serving files from current directory: {os.getcwd()}")
