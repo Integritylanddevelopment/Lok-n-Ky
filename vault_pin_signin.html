@@ -44,8 +44,13 @@
         .signin-header h2 {
             font-size: 28px;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #b8860b 50%, #daa520 75%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(184,134,11,0.8), 4px 4px 8px rgba(0,0,0,0.5), -1px -1px 1px rgba(255,255,255,0.3);
             margin-bottom: 8px;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.8));
         }
 
         .signin-header p {
@@ -201,7 +206,7 @@
 <body>
     <div class="signin-container">
         <div class="signin-header">
-            <h2>The Vault</h2>
+            <h2>Cred-Vault</h2>
             <p>PIN Sign In</p>
         </div>
 
