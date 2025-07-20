@@ -144,7 +144,7 @@
     <div class="welcome-container">
         <div class="welcome-header">
             <h1>Cred-Vault</h1>
-            <p>Secure your API keys and secrets</p>
+            <p>Credentials in the Cloud</p>
         </div>
 
         <div class="welcome-content">
@@ -152,19 +152,17 @@
                 <div class="auth-option" onclick="choosePIN()">
                     <span class="option-icon">📱</span>
                     <div class="option-title">Set Up PIN</div>
-                    <div class="option-description">Quick 4-digit PIN for fast access</div>
                 </div>
 
                 <div class="auth-option" onclick="chooseEmail()">
                     <span class="option-icon">📧</span>
                     <div class="option-title">Set Up Email & Password</div>
-                    <div class="option-description">Traditional email and password authentication</div>
                 </div>
             </div>
 
-            <p class="footer-text">
-                All credentials are stored securely on your device
-            </p>
+            <button class="footer-text" onclick="goToVault()" style="background: rgba(99, 91, 255, 0.3); border: 1px solid rgba(100, 181, 246, 0.6); border-radius: 12px; color: #81d4fa; padding: 12px 20px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px); position: relative; font-family: inherit; margin-top: 24px;">
+                To my Cred-Vault
+            </button>
         </div>
     </div>
 
@@ -180,17 +178,13 @@
             
             if (hasPIN) {
                 const pinButton = pinOption.querySelector('.option-title');
-                const pinDesc = pinOption.querySelector('.option-description');
                 pinButton.textContent = 'Sign In with PIN';
-                pinDesc.textContent = 'Enter your existing 4-digit PIN';
                 pinOption.onclick = signInWithPIN;
             }
             
             if (hasEmail) {
                 const emailButton = emailOption.querySelector('.option-title');
-                const emailDesc = emailOption.querySelector('.option-description');
                 emailButton.textContent = 'Sign In with Email';
-                emailDesc.textContent = 'Enter your existing email and password';
                 emailOption.onclick = signInWithEmail;
             }
         }
@@ -213,6 +207,20 @@
         function signInWithEmail() {
             console.log("User chose to sign in with existing email");
             window.location.href = 'vault_email_signin.html';
+        }
+
+        function goToVault() {
+            const hasPIN = localStorage.getItem("vault_pin");
+            const hasEmail = localStorage.getItem("vault_email_user");
+            
+            if (hasPIN) {
+                window.location.href = 'vault_pin_signin.html';
+            } else if (hasEmail) {
+                window.location.href = 'vault_email_signin.html';
+            } else {
+                // No credentials set up, redirect to PIN setup as default
+                window.location.href = 'vault_pin_setup.html';
+            }
         }
 
         // Run credential check when page loads
