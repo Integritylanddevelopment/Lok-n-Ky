@@ -225,6 +225,44 @@
             font-size: 14px;
             display: none;
         }
+
+        /* Forgot Password Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #1a1f36;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 400px;
+            color: #e3e8ee;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -243,9 +281,26 @@
             <div id="error-message" class="error-message" style="display: none;"></div>
             <input type="email" class="signin-input" id="email-input" placeholder="Enter your email" />
             <input type="password" class="signin-input" id="password-input" placeholder="Enter your password" />
-            
+
             <button class="signin-btn" id="signin-btn" onclick="signIn()" disabled>Sign In</button>
             <button class="back-btn" onclick="goBack()">← Back to Welcome</button>
+
+            <div class="forgot-password">
+                <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForgotPassword()">&times;</span>
+            <h3>Reset Password</h3>
+            <p>Enter your email to reset your password.</p>
+            <input type="email" id="reset-email-input" class="signin-input" placeholder="Enter your email" />
+            <input type="password" id="new-password-input" class="signin-input" placeholder="Enter your new password" />
+            <button class="signin-btn" onclick="resetPassword()">Reset Password</button>
+            <div id="reset-error-message" class="error-message" style="display: none;"></div>
         </div>
     </div>
 
@@ -255,6 +310,12 @@
         const signinBtn = document.getElementById('signin-btn');
         const errorMessage = document.getElementById('error-message');
 
+        // Forgot Password Modal Elements
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const resetEmailInput = document.getElementById('reset-email-input');
+        const newPasswordInput = document.getElementById('new-password-input');
+        const resetErrorMessage = document.getElementById('reset-error-message');
+
         function validateEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
@@ -262,7 +323,7 @@
         function validateInputs() {
             const email = emailInput.value.trim();
             const password = passwordInput.value;
-            
+
             signinBtn.disabled = !(validateEmail(email) && password.length >= 4);
         }
 
@@ -277,16 +338,16 @@
         function signIn() {
             const enteredEmail = emailInput.value.trim();
             const enteredPassword = passwordInput.value;
-            
+
             const storedUser = localStorage.getItem("vault_email_user");
-            
+
             if (!storedUser) {
                 showError("No account found. Please create an account first.");
                 return;
             }
-            
+
             const userData = JSON.parse(storedUser);
-            
+
             if (enteredEmail === userData.email && enteredPassword === userData.password) {
                 localStorage.setItem("vault_authenticated", "true");
                 localStorage.setItem("vault_auth_time", new Date().getTime().toString());
@@ -300,6 +361,63 @@
 
         function goBack() {
             window.location.href = 'index.html';
+        }
+
+        // Forgot Password Functions
+        function showForgotPassword() {
+            forgotPasswordModal.style.display = "block";
+        }
+
+        function closeForgotPassword() {
+            forgotPasswordModal.style.display = "none";
+        }
+
+        function resetPassword() {
+            const email = resetEmailInput.value.trim();
+            const newPassword = newPasswordInput.value;
+
+            if (!validateEmail(email)) {
+                resetErrorMessage.textContent = "Please enter a valid email address.";
+                resetErrorMessage.style.display = 'block';
+                return;
+            }
+
+            if (newPassword.length < 4) {
+                resetErrorMessage.textContent = "Password must be at least 4 characters long.";
+                resetErrorMessage.style.display = 'block';
+                return;
+            }
+
+            const storedUser = localStorage.getItem("vault_email_user");
+
+             if (!storedUser) {
+                resetErrorMessage.textContent = "No account found. Please create an account first.";
+                resetErrorMessage.style.display = 'block';
+                return;
+            }
+
+            const userData = JSON.parse(storedUser);
+
+            if (email === userData.email) {
+                userData.password = newPassword;
+                localStorage.setItem("vault_email_user", JSON.stringify(userData));
+                resetErrorMessage.textContent = "Password reset successfully!";
+                resetErrorMessage.style.color = "#10b981"; // Success color
+                resetErrorMessage.style.background = "rgba(16, 185, 129, 0.1)";
+                resetErrorMessage.style.border = "1px solid rgba(16, 185, 129, 0.3)";
+                resetErrorMessage.style.display = 'block';
+
+                setTimeout(() => {
+                    closeForgotPassword();
+                    resetErrorMessage.style.display = 'none';
+                    resetErrorMessage.style.color = "#f87171"; // Reset error color
+                    resetErrorMessage.style.background = "rgba(239, 68, 68, 0.1)";
+                    resetErrorMessage.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+                }, 3000);
+            } else {
+                resetErrorMessage.textContent = "Email not found. Please enter the correct email.";
+                resetErrorMessage.style.display = 'block';
+            }
         }
 
         // Event listeners
